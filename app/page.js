@@ -15,10 +15,9 @@ async function getDestaques() {
       .order("destaque_ativo", { ascending: false })
       .order("visitas", { ascending: false })
       .limit(6);
-    if (error) return [];
-    return data || [];
-  } catch {
-    return [];
+    return { data: data || [], erro: error ? error.message : null };
+  } catch (e) {
+    return { data: [], erro: "EXCEÇÃO: " + (e?.message || String(e)) };
   }
 }
 
@@ -32,7 +31,9 @@ const categorias = [
 ];
 
 export default async function Home() {
-  const destaques = await getDestaques();
+  const { data: destaques, erro } = await getDestaques();
+  const temUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ? "sim" : "NÃO";
+  const temKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "sim" : "NÃO";
 
   return (
     <>
@@ -106,7 +107,12 @@ export default async function Home() {
             destaques.map((im) => <ImovelCard key={im.id} imovel={im} />)
           ) : (
             <div className="empty">
-              Ainda não há imóveis publicados. Rode o <code>seed.sql</code> no Supabase (ou cadastre imóveis) e confira as chaves de ambiente.
+              Nenhum imóvel retornado.
+              <br />
+              <small style={{ opacity: 0.75, display: "block", marginTop: 8 }}>
+                Diagnóstico → URL configurada: <b>{temUrl}</b> · Chave configurada: <b>{temKey}</b> · Erro:{" "}
+                <b>{erro ? erro : "nenhum (a consulta rodou, mas voltou 0 linhas)"}</b>
+              </small>
             </div>
           )}
         </div>
