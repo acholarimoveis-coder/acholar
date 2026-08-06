@@ -38,6 +38,7 @@ export default function SiteFooter() {
             <ul>
               <li><a href="/quem-somos">Quem somos</a></li>
               <li><a href="/ajuda">Central de ajuda</a></li>
+              <li><a href="/trabalhe">Trabalhe conosco</a></li>
             </ul>
           </div>
         </div>
