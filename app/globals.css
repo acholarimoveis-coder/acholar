@@ -226,6 +226,16 @@ table.pt{width:100%;border-collapse:collapse}
 .fsave{display:flex;gap:10px;justify-content:flex-end}
 @media(max-width:640px){.pform .row,.pform .row3,.pform .row4{grid-template-columns:1fr 1fr}}
 
+/* ===== PAINEL ADMIN ===== */
+.pside.admin{background:#0C1B2B}
+.admintag{display:inline-flex;align-items:center;gap:6px;background:rgba(201,137,43,.18);color:#E7B860;font-size:.64rem;font-weight:800;padding:4px 10px;border-radius:999px;text-transform:uppercase;letter-spacing:.05em;margin:0 8px 12px}
+.btn-xs{padding:7px 12px;font-size:.8rem;border-radius:999px;font-weight:700;border:none;cursor:pointer;font-family:'Manrope';display:inline-flex;align-items:center;gap:5px}
+.btn-green{background:#1B9E6E;color:#fff}.btn-green:hover{filter:brightness(1.05)}
+.btn-red2{background:#fff;color:#C0453C;border:1.5px solid #F0C9C5}.btn-red2:hover{background:#FDECEA}
+.btn-amber2{background:#C2892B;color:#fff}
+.mininp{width:64px;border:1.5px solid var(--line);border-radius:8px;padding:7px 8px;font-family:'Manrope';font-weight:700;text-align:center;outline:none}
+.rowacts{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+
 @media(max-width:900px){.det-grid{grid-template-columns:1fr}.contact-card{position:static}.gallery-main{height:300px}}
 @media(max-width:640px){.search-row{flex-direction:column}.search-btn{padding:14px}.cats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.gallery-thumbs{grid-template-columns:repeat(3,1fr)}}
 

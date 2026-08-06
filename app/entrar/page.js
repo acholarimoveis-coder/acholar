@@ -20,7 +20,13 @@ export default function Entrar() {
     if (error) {
       setErro("E-mail ou senha incorretos.");
     } else {
-      router.push("/painel");
+      const { data: { user } } = await supabase.auth.getUser();
+      let destino = "/painel";
+      if (user) {
+        const { data: perfil } = await supabase.from("profiles").select("papel").eq("id", user.id).single();
+        if (perfil?.papel === "admin") destino = "/admin";
+      }
+      router.push(destino);
       router.refresh();
     }
   }
