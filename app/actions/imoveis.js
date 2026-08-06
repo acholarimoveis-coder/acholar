@@ -9,6 +9,35 @@ function num(v) {
   return isNaN(n) ? null : n;
 }
 
+// Liga/desliga o destaque de um imóvel, respeitando os slots contratados.
+export async function alternarDestaque(imovelId, ligar) {
+  try {
+    const { user, imob, supabase } = await getSessao();
+    if (!user || !imob) return { ok: false, error: "Sessão expirada." };
+
+    if (ligar) {
+      const { count } = await supabase
+        .from("imoveis")
+        .select("*", { count: "exact", head: true })
+        .eq("imobiliaria_id", imob.id)
+        .eq("destaque_ativo", true);
+      if ((count || 0) >= (imob.destaques_contratados || 0)) {
+        return { ok: false, error: "limite", limite: true };
+      }
+    }
+
+    const { error } = await supabase
+      .from("imoveis")
+      .update({ destaque_ativo: ligar })
+      .eq("id", imovelId)
+      .eq("imobiliaria_id", imob.id);
+    if (error) return { ok: false, error: error.message };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e?.message || "Erro." };
+  }
+}
+
 export async function salvarImovel(dados) {
   try {
     const { user, imob, supabase } = await getSessao();

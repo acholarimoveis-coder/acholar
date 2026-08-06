@@ -6,16 +6,32 @@ import ImovelCard from "./components/ImovelCard";
 export const dynamic = "force-dynamic";
 
 async function getDestaques() {
+  const TOTAL = 6;
   try {
     const supabase = createClient();
-    const { data } = await supabase
+    // 1º) imóveis com destaque pago
+    const { data: pagos } = await supabase
       .from("imoveis")
       .select("*")
       .eq("status", "publicado")
-      .order("destaque_ativo", { ascending: false })
-      .order("visitas", { ascending: false })
-      .limit(6);
-    return data || [];
+      .eq("destaque_ativo", true)
+      .limit(TOTAL);
+    let lista = pagos || [];
+    // 2º/3º) completa os slots vazios com imóveis aleatórios
+    if (lista.length < TOTAL) {
+      const { data: outros } = await supabase
+        .from("imoveis")
+        .select("*")
+        .eq("status", "publicado")
+        .limit(40);
+      const jaTem = new Set(lista.map((i) => i.id));
+      const aleatorios = (outros || [])
+        .filter((i) => !jaTem.has(i.id))
+        .sort(() => Math.random() - 0.5)
+        .slice(0, TOTAL - lista.length);
+      lista = [...lista, ...aleatorios];
+    }
+    return lista;
   } catch {
     return [];
   }
