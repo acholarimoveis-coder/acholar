@@ -28,6 +28,7 @@ export default function SiteFooter() {
           <div>
             <h4>Imobiliárias</h4>
             <ul>
+              <li><a href="/imobiliarias">Busca por imobiliária</a></li>
               <li><a href="/anuncie">Anunciar imóveis</a></li>
               <li><a href="/entrar">Entrar</a></li>
             </ul>
