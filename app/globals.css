@@ -205,6 +205,27 @@ table.pt{width:100%;border-collapse:collapse}
 .pempty{padding:34px 18px;text-align:center;color:var(--muted);font-weight:600}
 @media(max-width:820px){.painel{grid-template-columns:1fr}.pside{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center}.pnav{flex-direction:row;flex-wrap:wrap}.pspace,.puser{display:none}.pstats{grid-template-columns:1fr}table.pt{display:block;overflow-x:auto;white-space:nowrap}}
 
+/* ===== FORMULÁRIO DE IMÓVEL (painel) ===== */
+.pform{max-width:760px}
+.pform .fcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:16px}
+.pform .fcard h3{font-size:1.05rem;font-weight:700;margin-bottom:14px}
+.pform label{font-size:.8rem;font-weight:700;display:block;margin-bottom:5px}
+.pform .field{margin-bottom:12px}
+.pform .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pform .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.pform .row4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.seg2{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:4px;gap:2px}
+.seg2 button{background:none;border:none;font-weight:700;font-size:.88rem;color:var(--muted);padding:8px 18px;border-radius:999px;cursor:pointer;font-family:'Manrope'}
+.seg2 button.on{background:var(--primary);color:#fff}
+.titlebox{background:var(--surface-2);border-radius:10px;padding:12px 14px;font-weight:700;color:var(--ink)}
+.upbox{border:2px dashed #C7D6D6;border-radius:10px;padding:22px;text-align:center;color:var(--muted);font-weight:600;cursor:pointer;display:block}
+.thumbs-up{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.thumbs-up .t{position:relative;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:var(--surface-2)}
+.thumbs-up .t img{width:100%;height:100%;object-fit:cover}
+.thumbs-up .t button{position:absolute;top:5px;right:5px;width:22px;height:22px;border-radius:50%;background:rgba(15,27,45,.7);border:none;color:#fff;cursor:pointer;font-size:13px;line-height:1}
+.fsave{display:flex;gap:10px;justify-content:flex-end}
+@media(max-width:640px){.pform .row,.pform .row3,.pform .row4{grid-template-columns:1fr 1fr}}
+
 @media(max-width:900px){.det-grid{grid-template-columns:1fr}.contact-card{position:static}.gallery-main{height:300px}}
 @media(max-width:640px){.search-row{flex-direction:column}.search-btn{padding:14px}.cats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr}.gallery-thumbs{grid-template-columns:repeat(3,1fr)}}
 

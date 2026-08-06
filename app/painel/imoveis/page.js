@@ -40,7 +40,7 @@ export default async function MeusImoveis() {
                         <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
                           <img className="pthumb" src={foto} alt="" />
                           <div>
-                            <b style={{ display: "block" }}>{im.titulo}</b>
+                            <a href={`/painel/imoveis/${im.id}/editar`} style={{ display: "block", fontWeight: 700, color: "var(--ink)" }}>{im.titulo}</a>
                             <span style={{ fontSize: ".76rem", color: "var(--muted)" }}>Cód. {im.codigo || im.id.slice(0, 8)}</span>
                           </div>
                         </div>
