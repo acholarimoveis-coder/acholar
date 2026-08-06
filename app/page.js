@@ -8,16 +8,16 @@ export const dynamic = "force-dynamic";
 async function getDestaques() {
   try {
     const supabase = createClient();
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from("imoveis")
       .select("*")
       .eq("status", "publicado")
       .order("destaque_ativo", { ascending: false })
       .order("visitas", { ascending: false })
       .limit(6);
-    return { data: data || [], erro: error ? error.message : null };
-  } catch (e) {
-    return { data: [], erro: "EXCEÇÃO: " + (e?.message || String(e)) };
+    return data || [];
+  } catch {
+    return [];
   }
 }
 
@@ -31,9 +31,7 @@ const categorias = [
 ];
 
 export default async function Home() {
-  const { data: destaques, erro } = await getDestaques();
-  const temUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ? "sim" : "NÃO";
-  const temKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "sim" : "NÃO";
+  const destaques = await getDestaques();
 
   return (
     <>
@@ -106,14 +104,7 @@ export default async function Home() {
           {destaques.length > 0 ? (
             destaques.map((im) => <ImovelCard key={im.id} imovel={im} />)
           ) : (
-            <div className="empty">
-              Nenhum imóvel retornado.
-              <br />
-              <small style={{ opacity: 0.75, display: "block", marginTop: 8 }}>
-                Diagnóstico → URL configurada: <b>{temUrl}</b> · Chave configurada: <b>{temKey}</b> · Erro:{" "}
-                <b>{erro ? erro : "nenhum (a consulta rodou, mas voltou 0 linhas)"}</b>
-              </small>
-            </div>
+            <div className="empty">Em breve, novos imóveis em destaque por aqui.</div>
           )}
         </div>
       </section>
