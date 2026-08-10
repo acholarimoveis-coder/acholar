@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import ImovelCard from "../components/ImovelCard";
+import MapaImoveis from "../components/MapaImoveis";
 
 export const dynamic = "force-dynamic";
 
@@ -112,14 +113,17 @@ export default async function Busca({ searchParams }) {
           <div className="count">{count} {count === 1 ? "imóvel encontrado" : "imóveis encontrados"}</div>
         </div>
 
-        <div className="grid" style={{ paddingBottom: 60 }}>
-          {imoveis.length > 0 ? (
-            imoveis.map((im) => <ImovelCard key={im.id} imovel={im} />)
-          ) : (
-            <div className="empty">
-              Nenhum imóvel encontrado com esses filtros. Tente ampliar a busca.
-            </div>
-          )}
+        <div className="busca-layout">
+          <div className="busca-list">
+            {imoveis.length > 0 ? (
+              imoveis.map((im) => <ImovelCard key={im.id} imovel={im} />)
+            ) : (
+              <div className="empty">Nenhum imóvel encontrado com esses filtros. Tente ampliar a busca.</div>
+            )}
+          </div>
+          <div className="busca-map">
+            <MapaImoveis imoveis={imoveis} />
+          </div>
         </div>
       </div>
 

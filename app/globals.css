@@ -123,6 +123,11 @@ section{padding:54px 0}
 .rhead{display:flex;justify-content:space-between;align-items:baseline;padding:22px 0 8px;flex-wrap:wrap;gap:10px}
 .rhead h1{font-size:1.5rem;font-weight:700}
 .rhead .count{color:var(--muted);font-weight:600;font-size:.94rem}
+.busca-layout{display:grid;grid-template-columns:1fr 440px;gap:24px;align-items:start;padding-bottom:60px}
+.busca-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.busca-map{position:sticky;top:80px;height:calc(100vh - 100px)}
+@media(max-width:1080px){.busca-layout{grid-template-columns:1fr}.busca-map{display:none}}
+@media(max-width:640px){.busca-list{grid-template-columns:1fr}}
 
 /* ===== IMOBILIÁRIAS ===== */
 .top-strip{background:linear-gradient(120deg,#085e5c,#031524);color:#fff;padding:44px 0 40px}
