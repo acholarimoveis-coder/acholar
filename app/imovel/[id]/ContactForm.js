@@ -60,7 +60,11 @@ export default function ContactForm({ imovel, imobiliaria }) {
   return (
     <div className="contact-card">
       <div className="imob-mini">
-        <div className="av">{(imobiliaria?.nome || "IM").split(" ").filter((w) => w.length > 2).slice(0, 2).map((w) => w[0]).join("").toUpperCase()}</div>
+        <div className="av" style={{ overflow: "hidden" }}>
+          {imobiliaria?.logo_url
+            ? <img src={imobiliaria.logo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            : (imobiliaria?.nome || "IM").split(" ").filter((w) => w.length > 2).slice(0, 2).map((w) => w[0]).join("").toUpperCase()}
+        </div>
         <div>
           <b>{imobiliaria?.nome || "Imobiliária parceira"}</b>
           <span>{imobiliaria?.creci ? `CRECI ${imobiliaria.creci} · ` : ""}Parceiro Acholar</span>

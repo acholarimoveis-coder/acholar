@@ -41,7 +41,9 @@ export default async function Imobiliarias() {
             imobs.map((im, idx) => (
               <div className="icard" key={im.id}>
                 <div className="top">
-                  <div className="iav" style={{ background: cores[idx % cores.length] }}>{iniciais(im.nome)}</div>
+                  <div className="iav" style={{ background: cores[idx % cores.length], overflow: "hidden", padding: 0 }}>
+                    {im.logo_url ? <img src={im.logo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : iniciais(im.nome)}
+                  </div>
                   <div>
                     <h3>{im.nome}</h3>
                     <div className="creci">{im.creci ? `CRECI ${im.creci}` : "Parceiro Acholar"}</div>

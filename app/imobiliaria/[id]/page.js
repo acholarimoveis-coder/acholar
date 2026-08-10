@@ -46,7 +46,9 @@ export default async function PerfilImobiliaria({ params }) {
       <div className="imob-cover" />
       <div className="wrap">
         <div className="imob-profile">
-          <div className="iav">{iniciais(imob.nome)}</div>
+          <div className="iav" style={{ overflow: "hidden" }}>
+            {imob.logo_url ? <img src={imob.logo_url} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : iniciais(imob.nome)}
+          </div>
           <div className="info">
             <h1>{imob.nome}</h1>
             <div className="sub">
