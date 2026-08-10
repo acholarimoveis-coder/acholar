@@ -12,12 +12,7 @@ export default async function PainelLayout({ children }) {
     <div className="painel">
       <aside className="pside">
         <a className="logo" href="/painel">
-          <svg className="mark" viewBox="0 0 40 40" fill="none">
-            <path d="M20 4 L34 15 V34 a2 2 0 0 1-2 2 H8 a2 2 0 0 1-2-2 V15 Z" fill="#fff" />
-            <path d="M20 4 L34 15 V20 C30 17 25 16 20 16 S10 17 6 20 V15 Z" fill="#0E7A6E" />
-            <circle cx="20" cy="26" r="4.5" fill="#10261F" />
-          </svg>
-          Acholar
+          <img src="/logo-escuro.png" alt="Acholar" style={{ height: 30, width: "auto", display: "block" }} />
         </a>
         <nav className="pnav">
           <a href="/painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="7" height="9" rx="1.5" /><rect x="14" y="3" width="7" height="5" rx="1.5" /><rect x="14" y="12" width="7" height="9" rx="1.5" /><rect x="3" y="16" width="7" height="5" rx="1.5" /></svg>Painel</a>

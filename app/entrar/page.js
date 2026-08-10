@@ -34,13 +34,8 @@ export default function Entrar() {
   return (
     <div className="login-wrap">
       <div className="login-card">
-        <a className="logo" href="/">
-          <svg className="mark" viewBox="0 0 40 40" fill="none">
-            <path d="M20 4 L34 15 V34 a2 2 0 0 1-2 2 H8 a2 2 0 0 1-2-2 V15 Z" fill="#0E7A6E" />
-            <path d="M20 4 L34 15 V20 C30 17 25 16 20 16 S10 17 6 20 V15 Z" fill="#0F1B2D" />
-            <circle cx="20" cy="26" r="4.5" fill="#fff" />
-          </svg>
-          Acholar
+        <a className="logo" href="/" style={{ justifyContent: "center" }}>
+          <img src="/logo-claro.png" alt="Acholar" style={{ height: 40, width: "auto", display: "block", margin: "0 auto" }} />
         </a>
         <h1>Entrar no painel</h1>
         <p className="hint">Acesso para imobiliárias parceiras.</p>

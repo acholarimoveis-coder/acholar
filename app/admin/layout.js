@@ -13,12 +13,7 @@ export default async function AdminLayout({ children }) {
     <div className="painel">
       <aside className="pside admin">
         <a className="logo" href="/admin">
-          <svg className="mark" viewBox="0 0 40 40" fill="none">
-            <path d="M20 4 L34 15 V34 a2 2 0 0 1-2 2 H8 a2 2 0 0 1-2-2 V15 Z" fill="#fff" />
-            <path d="M20 4 L34 15 V20 C30 17 25 16 20 16 S10 17 6 20 V15 Z" fill="#0E7A6E" />
-            <circle cx="20" cy="26" r="4.5" fill="#0C1B2B" />
-          </svg>
-          Acholar
+          <img src="/logo-escuro.png" alt="Acholar" style={{ height: 30, width: "auto", display: "block" }} />
         </a>
         <span className="admintag">Administração</span>
         <nav className="pnav">

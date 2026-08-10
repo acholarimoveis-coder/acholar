@@ -4,13 +4,8 @@ export default function SiteFooter() {
       <div className="wrap">
         <div className="foot-grid">
           <div>
-            <a className="logo" href="/" style={{ color: "#fff" }}>
-              <svg className="mark" viewBox="0 0 40 40" fill="none">
-                <path d="M20 4 L34 15 V34 a2 2 0 0 1-2 2 H8 a2 2 0 0 1-2-2 V15 Z" fill="#fff" />
-                <path d="M20 4 L34 15 V20 C30 17 25 16 20 16 S10 17 6 20 V15 Z" fill="#0E7A6E" />
-                <circle cx="20" cy="26" r="4.5" fill="#0F1B2D" />
-              </svg>
-              Acholar
+            <a className="logo" href="/">
+              <img src="/logo-escuro.png" alt="Acholar" style={{ height: 32, width: "auto", display: "block" }} />
             </a>
             <p className="foot-about">
               O portal de imóveis da região de Jales. Todos os imóveis das imobiliárias num só lugar.
