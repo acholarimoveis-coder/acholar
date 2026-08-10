@@ -52,6 +52,11 @@ export default async function ImovelPage({ params }) {
     imovel.area_util ? { ic: <AreaI />, b: `${imovel.area_util}m²`, s: "Área útil" } : null,
   ].filter(Boolean);
 
+  const temGeo = imovel.lat != null && imovel.lng != null;
+  const mapQ = temGeo
+    ? `${imovel.lat},${imovel.lng}`
+    : encodeURIComponent([imovel.endereco, imovel.bairro, imovel.cidade].filter(Boolean).join(", "));
+
   return (
     <>
       <SiteHeader />
@@ -103,6 +108,21 @@ export default async function ImovelPage({ params }) {
                 {imovel.iptu ? ` · IPTU: ${formatPreco(imovel.iptu)}` : ""}
                 {imovel.condominio ? ` · Condomínio: ${formatPreco(imovel.condominio)}` : ""}
               </p>
+            </div>
+
+            <div className="det-block">
+              <h2>Localização</h2>
+              <iframe
+                title="Mapa do imóvel"
+                src={`https://www.google.com/maps?q=${mapQ}&z=16&output=embed`}
+                style={{ width: "100%", height: 320, border: 0, borderRadius: "var(--radius)" }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <a className="btn btn-ghost" href={`https://www.google.com/maps/dir/?api=1&destination=${mapQ}`} target="_blank" rel="noopener" style={{ marginTop: 12 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                Como chegar
+              </a>
             </div>
           </div>
 
