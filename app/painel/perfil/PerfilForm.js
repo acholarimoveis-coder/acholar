@@ -3,7 +3,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { salvarPerfil } from "@/app/actions/perfil";
-import { iniciais } from "@/lib/painel";
+
+function iniciais(nome) {
+  return (nome || "IM").split(" ").filter((w) => w.length > 2).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+}
 
 export default function PerfilForm({ imob, imobId }) {
   const router = useRouter();
