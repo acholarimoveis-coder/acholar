@@ -4,8 +4,11 @@ import { importarXmlParaImobiliaria } from "@/lib/sync";
 export const dynamic = "force-dynamic";
 
 export async function GET(request) {
+  const secret = process.env.CRON_SECRET;
   const token = new URL(request.url).searchParams.get("token");
-  if (!process.env.CRON_SECRET || token !== process.env.CRON_SECRET) {
+  const authHeader = request.headers.get("authorization"); // Vercel Cron envia: "Bearer <CRON_SECRET>"
+  const autorizado = secret && (token === secret || authHeader === `Bearer ${secret}`);
+  if (!autorizado) {
     return new Response("Não autorizado", { status: 401 });
   }
 
