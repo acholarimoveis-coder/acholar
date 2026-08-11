@@ -201,15 +201,18 @@ export default async function Home() {
           <div className="imobd-grid">
             {imobsDestaque.map((im) => (
               <div key={im.id} className="imobd-card">
-                <a className="imobd-head" href={`/imobiliaria/${im.id}`}>
-                  <div className="imobd-logo">
-                    {im.logo_url ? <img src={im.logo_url} alt="" /> : <span>{iniciais(im.nome)}</span>}
-                  </div>
-                  <div className="imobd-info">
-                    <b>{im.nome}</b>
-                    <span>{im.cidade || "Jales"}</span>
-                  </div>
-                </a>
+                <div className="imobd-side">
+                  <a className="imobd-head" href={`/imobiliaria/${im.id}`}>
+                    <div className="imobd-logo">
+                      {im.logo_url ? <img src={im.logo_url} alt="" /> : <span>{iniciais(im.nome)}</span>}
+                    </div>
+                    <div className="imobd-info">
+                      <b>{im.nome}</b>
+                      <span>{im.cidade || "Jales"}</span>
+                    </div>
+                  </a>
+                  <a className="btn btn-ghost imobd-cta" href={`/imobiliaria/${im.id}`}>Ver todos os imóveis</a>
+                </div>
                 <div className="imobd-imoveis">
                   {im.tops.map((t) => (
                     <a key={t.id} className="imobd-mini" href={`/imovel/${t.id}`} title={t.titulo}>
@@ -218,7 +221,6 @@ export default async function Home() {
                     </a>
                   ))}
                 </div>
-                <a className="btn btn-ghost imobd-cta" href={`/imobiliaria/${im.id}`}>Ver todos os imóveis</a>
               </div>
             ))}
           </div>
