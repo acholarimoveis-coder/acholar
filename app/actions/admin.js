@@ -127,5 +127,17 @@ export async function atualizarImobiliaria(id, campos) {
   });
   const { error } = await s.supabase.from("imobiliarias").update(permitido).eq("id", id);
   if (error) return { ok: false, error: error.message };
+
+  // Ao mudar o status da imobiliária, arrasta os imóveis vinculados:
+  // - pausada/suspensa  => tira os publicados das buscas (vira "pausado")
+  // - reativada         => devolve os que estavam pausados para "publicado"
+  if (permitido.status !== undefined) {
+    if (["pausada", "suspensa"].includes(permitido.status)) {
+      await s.supabase.from("imoveis").update({ status: "pausado" }).eq("imobiliaria_id", id).eq("status", "publicado");
+    } else if (["teste", "ativa", "tolerancia"].includes(permitido.status)) {
+      await s.supabase.from("imoveis").update({ status: "publicado" }).eq("imobiliaria_id", id).eq("status", "pausado");
+    }
+  }
+
   return { ok: true };
 }
