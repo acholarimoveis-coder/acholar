@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import SiteHeader from "../../components/SiteHeader";
 import SiteFooter from "../../components/SiteFooter";
 import ContactForm from "./ContactForm";
+import Galeria from "./Galeria";
 import { formatPreco, FOTO_PLACEHOLDER } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
@@ -98,14 +99,7 @@ export default async function ImovelPage({ params }) {
           <div className="det-price">{formatPreco(imovel.preco, imovel.tipo_negocio)}</div>
         </div>
 
-        <div className="gallery-main">
-          <img src={fotos[0]} alt={imovel.titulo} />
-        </div>
-        {fotos.length > 1 ? (
-          <div className="gallery-thumbs">
-            {fotos.slice(1, 5).map((f, i) => (<img key={i} src={f} alt="" />))}
-          </div>
-        ) : null}
+        <Galeria fotos={fotos} titulo={imovel.titulo} />
 
         <div className="det-grid">
           <div>

@@ -15,7 +15,8 @@ export default async function PainelHome() {
     supabase.from("imoveis").select("id, titulo, bairro, visitas, tipo_negocio, preco").eq("imobiliaria_id", imobId).eq("status", "publicado"),
   ]);
 
-  // imóveis mais vistos da imobiliária
+  // total de visualizações e imóveis mais vistos da imobiliária
+  const totalVisitas = (meus || []).reduce((s, m) => s + (m.visitas || 0), 0);
   const topImoveis = (meus || []).filter((m) => (m.visitas || 0) > 0).sort((a, b) => (b.visitas || 0) - (a.visitas || 0)).slice(0, 5);
   // bairros mais vistos (soma das visitas dos imóveis de cada bairro)
   const mapaB = {};
@@ -39,9 +40,10 @@ export default async function PainelHome() {
           </div>
         ) : null}
 
-        <div className="pstats">
+        <div className="pstats" style={{ gridTemplateColumns: "repeat(4,1fr)" }}>
           <div className="pstat"><b>{nImoveis || 0}</b><span>Imóveis cadastrados</span></div>
           <div className="pstat"><b>{nAtivos || 0}</b><span>Publicados</span></div>
+          <div className="pstat"><b>{totalVisitas.toLocaleString("pt-BR")}</b><span>Visualizações</span></div>
           <div className="pstat"><b>{nLeads || 0}</b><span>Leads recebidos</span></div>
         </div>
 

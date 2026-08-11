@@ -282,6 +282,23 @@ a.rank-row:hover{background:var(--surface-2)}
 .gallery-main img{width:100%;height:100%;object-fit:cover}
 .gallery-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:26px}
 .gallery-thumbs img{width:100%;height:90px;object-fit:cover;border-radius:10px}
+.galeria-click{cursor:zoom-in}
+.gallery-main.galeria-click{position:relative}
+.gallery-main.galeria-click img{transition:.3s}
+.gallery-main.galeria-click:hover img{transform:scale(1.03)}
+.galeria-zoom{position:absolute;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(3,21,36,.72);color:#fff;font-size:.82rem;font-weight:700;padding:8px 13px;border-radius:999px;pointer-events:none}
+.galeria-thumb{position:relative;border-radius:10px;overflow:hidden;height:90px}
+.galeria-thumb img{width:100%;height:100%;object-fit:cover}
+.galeria-mais{position:absolute;inset:0;background:rgba(3,21,36,.62);color:#fff;display:grid;place-items:center;font-family:Sora,sans-serif;font-weight:800;font-size:1.2rem}
+.lbx{position:fixed;inset:0;z-index:300;background:rgba(3,21,36,.92);display:flex;align-items:center;justify-content:center;padding:40px}
+.lbx-img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:8px;cursor:default}
+.lbx-close{position:absolute;top:18px;right:20px;background:rgba(255,255,255,.12);border:none;color:#fff;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+.lbx-close:hover{background:rgba(255,255,255,.24)}
+.lbx-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.12);border:none;color:#fff;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+.lbx-nav:hover{background:rgba(255,255,255,.24)}
+.lbx-nav.prev{left:20px}.lbx-nav.next{right:20px}
+.lbx-count{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);color:#fff;font-weight:700;font-size:.9rem;background:rgba(255,255,255,.12);padding:6px 14px;border-radius:999px}
+@media(max-width:640px){.lbx{padding:16px}.lbx-nav{width:42px;height:42px}.lbx-nav.prev{left:8px}.lbx-nav.next{right:8px}}
 .det-grid{display:grid;grid-template-columns:1fr 360px;gap:36px;align-items:start;padding-bottom:60px}
 .specs-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
 .spec-box{flex:1;min-width:120px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:16px;display:flex;align-items:center;gap:12px}
