@@ -126,7 +126,7 @@ section{padding:54px 0}
 .busca-layout{display:grid;grid-template-columns:1fr 440px;gap:24px;align-items:start;padding-bottom:60px}
 .busca-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .busca-map{position:sticky;top:80px;height:calc(100vh - 100px)}
-@media(max-width:1080px){.busca-layout{grid-template-columns:1fr}.busca-map{display:none}}
+@media(max-width:1000px){.busca-layout{grid-template-columns:1fr}.busca-map{display:none}}
 @media(max-width:640px){.busca-list{grid-template-columns:1fr}}
 
 /* ===== IMOBILIÁRIAS ===== */
