@@ -10,7 +10,10 @@ const ESPACOS = [
   { v: "resultados-topo", nome: "Busca — faixa no topo", dica: "Aparece acima dos resultados. Ideal ~1200×140px." },
 ];
 
-const vazio = { anunciante: "", tipo: "parceiro", espaco: "home-topo", imagem_url: "", link: "", inicio: "", fim: "" };
+const vazio = { anunciante: "", tipo: "parceiro", espaco: "home-topo", imagem_url: "", link: "", inicio: "", fim: "", valor: "" };
+
+const fmtData = (d) => (d ? new Date(d + "T00:00:00").toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "2-digit" }) : null);
+const brl = (v) => Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
 export default function PublicidadeManager({ anuncios }) {
   const router = useRouter();
@@ -92,11 +95,14 @@ export default function PublicidadeManager({ anuncios }) {
             </div>
           </div>
 
-          <div className="field"><label>Link de destino (opcional)</label><input className="cf-inp" style={{ marginBottom: 0 }} value={f.link} onChange={(e) => up("link", e.target.value)} placeholder="https://" /></div>
+          <div className="row">
+            <div className="field"><label>Link de destino (opcional)</label><input className="cf-inp" style={{ marginBottom: 0 }} value={f.link} onChange={(e) => up("link", e.target.value)} placeholder="https://" /></div>
+            <div className="field"><label>Valor contratado (R$)</label><input className="cf-inp" style={{ marginBottom: 0 }} type="number" min="0" step="0.01" value={f.valor} onChange={(e) => up("valor", e.target.value)} placeholder="Ex.: 400" /></div>
+          </div>
 
           <div className="row">
-            <div className="field"><label>Início (opcional)</label><input className="cf-inp" style={{ marginBottom: 0 }} type="date" value={f.inicio} onChange={(e) => up("inicio", e.target.value)} /></div>
-            <div className="field"><label>Fim (opcional)</label><input className="cf-inp" style={{ marginBottom: 0 }} type="date" value={f.fim} onChange={(e) => up("fim", e.target.value)} /></div>
+            <div className="field"><label>Início do contrato</label><input className="cf-inp" style={{ marginBottom: 0 }} type="date" value={f.inicio} onChange={(e) => up("inicio", e.target.value)} /></div>
+            <div className="field"><label>Fim do contrato</label><input className="cf-inp" style={{ marginBottom: 0 }} type="date" value={f.fim} onChange={(e) => up("fim", e.target.value)} /></div>
           </div>
 
           {erro ? <div className="cf-erro" style={{ marginBottom: 10 }}>{erro}</div> : null}
@@ -119,6 +125,8 @@ export default function PublicidadeManager({ anuncios }) {
                   <div className="bi-info">
                     <b>{a.anunciante}</b>
                     <span>{esp ? esp.nome : a.espaco}</span>
+                    {a.inicio || a.fim ? <span>{fmtData(a.inicio) || "…"} — {fmtData(a.fim) || "…"}</span> : null}
+                    {a.valor ? <span style={{ color: "var(--primary-dark)", fontWeight: 700 }}>{brl(a.valor)}</span> : null}
                     <span className={`chip-st ${a.status === "ativo" ? "pub" : "novo"}`}>{a.status === "ativo" ? "Ativo" : "Encerrado"}</span>
                   </div>
                   <div className="bi-acts">

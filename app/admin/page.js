@@ -8,7 +8,7 @@ const brl = (v) => Number(v || 0).toLocaleString("pt-BR", { style: "currency", c
 export default async function AdminHome() {
   const { supabase } = await getSessao();
 
-  const [{ count: nImob }, { count: nPub }, { count: nPend }, { count: nLeads }, imobsRes, planosRes, imoveisRes, cfgRes] = await Promise.all([
+  const [{ count: nImob }, { count: nPub }, { count: nPend }, { count: nLeads }, imobsRes, planosRes, imoveisRes, cfgRes, anunRes] = await Promise.all([
     supabase.from("imobiliarias").select("*", { count: "exact", head: true }),
     supabase.from("imoveis").select("*", { count: "exact", head: true }).eq("status", "publicado"),
     supabase.from("imoveis").select("*", { count: "exact", head: true }).eq("status", "pendente"),
@@ -17,6 +17,7 @@ export default async function AdminHome() {
     supabase.from("planos").select("id, nome, valor_mensal"),
     supabase.from("imoveis").select("id, titulo, bairro, cidade, visitas").eq("status", "publicado"),
     supabase.from("configuracoes").select("chave, valor").in("chave", ["whatsapp_cobranca", "msg_cobranca"]),
+    supabase.from("anuncios").select("valor, status"),
   ]);
 
   const imobs = imobsRes.data || [];
@@ -38,6 +39,9 @@ export default async function AdminHome() {
       if (vig >= hoje && vig <= limite7) vencendo7++;
     }
   }
+  // receita de publicidade (banners ativos)
+  const receitaPub = (anunRes.data || []).filter((a) => a.status === "ativo").reduce((s, a) => s + Number(a.valor || 0), 0);
+  const totalMensal = mrr + receitaPub;
 
   // ----- Mais procurados (portal) -----
   const imoveis = imoveisRes.data || [];
@@ -68,18 +72,18 @@ export default async function AdminHome() {
         ) : null}
 
         <div className="pcard">
-          <div className="pcard-h">Faturamento</div>
+          <div className="pcard-h">Faturamento mensal</div>
           <div style={{ padding: 18 }}>
             <div className="fat-grid">
-              <div className="fat-box primary"><b>{brl(mrr)}</b><span>Receita mensal (ativas)</span></div>
+              <div className="fat-box primary"><b>{brl(totalMensal)}</b><span>Total mensal (planos + publicidade)</span></div>
+              <div className="fat-box"><b>{brl(mrr)}</b><span>Planos das imobiliárias</span></div>
+              <div className="fat-box"><b>{brl(receitaPub)}</b><span>Publicidade (banners)</span></div>
               <div className="fat-box"><b>{brl(receitaTeste)}</b><span>Potencial em teste</span></div>
-              <div className="fat-box"><b>{cont.ativa || 0}</b><span>Ativas pagantes</span></div>
-              <div className="fat-box"><b>{cont.teste || 0}</b><span>Em teste grátis</span></div>
               <div className="fat-box"><b>{(cont.tolerancia || 0) + (cont.pausada || 0)}</b><span>Em atraso / pausadas</span></div>
               <div className={`fat-box ${vencendo7 > 0 ? "warn" : ""}`}><b>{vencendo7}</b><span>Vencendo em 7 dias</span></div>
             </div>
             <div style={{ fontSize: ".76rem", color: "var(--muted)", fontWeight: 600, marginTop: 12 }}>
-              Estimativa com base no plano de cada imobiliária. Ajuste plano e vigência em Imobiliárias → Editar.
+              Planos: estimativa pelo plano de cada imobiliária ativa (ajuste em Imobiliárias → Editar). Publicidade: soma dos banners ativos.
             </div>
           </div>
         </div>

@@ -21,6 +21,7 @@ export default async function AdminLayout({ children }) {
           <a href="/admin/imobiliarias"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 21h18M5 21V7l7-4 7 4v14" /><path d="M9 21v-5h6v5" /></svg>Imobiliárias</a>
           <a href="/admin/imoveis"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z" /></svg>Imóveis</a>
           <a href="/admin/publicidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 9h18" /></svg>Publicidade</a>
+          <a href="/admin/relatorios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19V5M10 19V9M16 19v-6M22 19H2" /></svg>Relatórios</a>
         </nav>
         <div className="pspace" />
         <nav className="pnav">
