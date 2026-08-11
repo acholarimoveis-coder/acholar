@@ -91,10 +91,10 @@ section{padding:54px 0}
 .imobd-mini .p{position:absolute;left:8px;bottom:8px;right:8px;background:rgba(3,21,36,.82);color:#fff;font-size:.78rem;font-weight:700;padding:4px 8px;border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .imobd-cta{width:100%;justify-content:center}
 @media(max-width:760px){.imobd-card{grid-template-columns:1fr}}
-.banner-slot{padding:18px 0}
-.banner{position:relative;border-radius:var(--radius);overflow:hidden;line-height:0;border:1px solid var(--line)}
-.banner img{width:100%;height:auto;display:block}
-.banner-tag{position:absolute;top:8px;right:8px;background:rgba(3,21,36,.6);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:5px;line-height:1.4}
+.promo-slot{padding:18px 0}
+.promo-box{position:relative;border-radius:var(--radius);overflow:hidden;line-height:0;border:1px solid var(--line)}
+.promo-box img{width:100%;height:auto;display:block}
+.promo-tag{position:absolute;top:8px;right:8px;background:rgba(3,21,36,.6);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:2px 7px;border-radius:5px;line-height:1.4}
 .sino-wrap{position:fixed;top:14px;right:20px;z-index:120}
 .sino-btn{position:relative;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:#fff;color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:var(--shadow-sm)}
 .sino-btn:hover{border-color:var(--primary)}
@@ -150,9 +150,9 @@ a.rank-row:hover{background:var(--surface-2)}
 @media(max-width:760px){.relat-grid{grid-template-columns:1fr}}
 .pgrid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
 .pgrid2 .pform{max-width:none}
-.banner-list{display:flex;flex-direction:column;gap:12px}
-.banner-item{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px}
-.banner-item>img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:var(--surface-2)}
+.promo-list{display:flex;flex-direction:column;gap:12px}
+.promo-item{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:10px}
+.promo-item>img{width:96px;height:60px;object-fit:cover;border-radius:8px;background:var(--surface-2)}
 .bi-info{display:flex;flex-direction:column;gap:3px;min-width:0}
 .bi-info b{font-size:.92rem;font-weight:700}
 .bi-info span{font-size:.78rem;color:var(--muted);font-weight:600}

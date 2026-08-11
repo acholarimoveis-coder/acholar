@@ -130,7 +130,7 @@ export default async function AdminHome() {
             <div className="rowacts">
               <a className="btn btn-ghost" href="/admin/imoveis?status=pendente">Moderar imóveis</a>
               <a className="btn btn-ghost" href="/admin/imobiliarias">Gerenciar imobiliárias</a>
-              <a className="btn btn-ghost" href="/admin/publicidade">Publicidade</a>
+              <a className="btn btn-ghost" href="/admin/parcerias">Publicidade</a>
             </div>
           </div>
         </div>

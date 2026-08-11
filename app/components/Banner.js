@@ -17,17 +17,17 @@ export default async function Banner({ espaco }) {
   }
   if (!anuncio) return null;
 
-  const img = <img src={anuncio.imagem_url} alt={anuncio.anunciante || "Publicidade"} loading="lazy" />;
+  const img = <img src={anuncio.imagem_url} alt={anuncio.anunciante || "Parceiro"} loading="lazy" />;
   return (
-    <div className="banner-slot">
+    <div className="promo-slot">
       <div className="wrap">
-        <div className={`banner ${espaco}`}>
+        <div className={`promo-box ${espaco}`}>
           {anuncio.link ? (
             <a href={anuncio.link} target="_blank" rel="noopener sponsored nofollow">{img}</a>
           ) : (
             img
           )}
-          <span className="banner-tag">Publicidade</span>
+          <span className="promo-tag">Publicidade</span>
         </div>
       </div>
     </div>
