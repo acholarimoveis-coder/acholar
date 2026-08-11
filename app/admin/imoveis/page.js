@@ -59,7 +59,15 @@ export default async function AdminImoveis({ searchParams }) {
                       <td style={{ fontWeight: 700, color: "var(--primary)" }}>{formatPreco(im.preco, im.tipo_negocio)}</td>
                       <td style={{ color: "var(--muted)" }}>{im.origem === "xml" ? "XML" : "Manual"}</td>
                       <td><span className={`chip-st ${cls}`}>{txt}</span></td>
-                      <td><ModButtons id={im.id} status={im.status} /></td>
+                      <td>
+                        <div className="rowacts">
+                          <ModButtons id={im.id} status={im.status} />
+                          <a className="btn-xs btn-ghost" href={`/admin/imoveis/${im.id}/local`} style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4 }} title="Ajustar localização no mapa">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                            {im.geo_travado ? "Local 🔒" : "Local"}
+                          </a>
+                        </div>
+                      </td>
                     </tr>
                   );
                 })}
