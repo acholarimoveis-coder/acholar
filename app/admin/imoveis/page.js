@@ -1,8 +1,10 @@
 import { getSessao } from "@/lib/painel";
 import { formatPreco, FOTO_PLACEHOLDER } from "@/lib/format";
 import ModButtons from "./ModButtons";
+import GeocodeButton from "./GeocodeButton";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const rotulos = {
   publicado: ["Publicado", "pub"],
@@ -40,7 +42,10 @@ export default async function AdminImoveis({ searchParams }) {
 
   return (
     <>
-      <div className="ptop">Imóveis</div>
+      <div className="ptop" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span>Imóveis</span>
+        <GeocodeButton />
+      </div>
       <div className="pcontent">
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
           <div className="rowacts">

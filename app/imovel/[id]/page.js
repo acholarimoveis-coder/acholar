@@ -130,6 +130,11 @@ export default async function ImovelPage({ params }) {
 
             <div className="det-block">
               <h2>Localização</h2>
+              {imovel.geo_aprox ? (
+                <p style={{ fontSize: ".85rem", color: "var(--muted)", fontWeight: 600, marginBottom: 10 }}>
+                  📍 Localização aproximada, baseada no bairro. Confirme o endereço exato com a imobiliária.
+                </p>
+              ) : null}
               <iframe
                 title="Mapa do imóvel"
                 src={`https://www.google.com/maps?q=${mapQ}&z=16&output=embed`}

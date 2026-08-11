@@ -2,6 +2,7 @@
 import { getSessao } from "@/lib/painel";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { importarXmlParaImobiliaria } from "@/lib/sync";
+import { geocodificarPendentes } from "@/lib/geocode";
 
 async function comoAdmin() {
   const s = await getSessao();
@@ -116,6 +117,19 @@ export async function salvarLocalImovel(id, { lat, lng }) {
   const { error } = await s.supabase.from("imoveis").update({ lat: la, lng: ln, geo_travado: true }).eq("id", id);
   if (error) return { ok: false, error: error.message };
   return { ok: true };
+}
+
+// Rodar a geocodificação aproximada (por bairro) sob demanda, no admin
+export async function geocodificarAgora() {
+  const s = await comoAdmin();
+  if (!s) return { ok: false, error: "Sem permissão." };
+  try {
+    const admin = createAdminClient();
+    const r = await geocodificarPendentes(admin, { max: 10 });
+    return { ok: true, ...r };
+  } catch (e) {
+    return { ok: false, error: e?.message || "Falha na geocodificação." };
+  }
 }
 
 // Voltar a usar a localização que vem do XML (destrava)

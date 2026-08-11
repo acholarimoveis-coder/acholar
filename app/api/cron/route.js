@@ -1,7 +1,9 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { importarXmlParaImobiliaria } from "@/lib/sync";
+import { geocodificarPendentes } from "@/lib/geocode";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 export async function GET(request) {
   const secret = process.env.CRON_SECRET;
@@ -63,5 +65,13 @@ export async function GET(request) {
     }
   }
 
-  return Response.json({ ok: true, executadoEm: new Date().toISOString(), pausadas, emTolerancia, xml: xmlResumo });
+  // Preenche a localização aproximada (por bairro) dos imóveis sem coordenada válida.
+  let geo = null;
+  try {
+    geo = await geocodificarPendentes(supabase, { max: 15 });
+  } catch (e) {
+    geo = { erro: e?.message || "falha na geocodificação" };
+  }
+
+  return Response.json({ ok: true, executadoEm: new Date().toISOString(), pausadas, emTolerancia, xml: xmlResumo, geo });
 }
