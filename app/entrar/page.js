@@ -47,6 +47,9 @@ export default function Entrar() {
             {carregando ? "Entrando..." : "Entrar"}
           </button>
         </form>
+        <p className="hint" style={{ marginTop: 12, marginBottom: 0 }}>
+          <a href="/recuperar" style={{ color: "var(--primary)", fontWeight: 700 }}>Esqueci minha senha</a>
+        </p>
         <p className="hint" style={{ marginTop: 14, marginBottom: 0 }}>
           Ainda não é parceiro? <a href="/anuncie" style={{ color: "var(--primary)", fontWeight: 700 }}>Anuncie seus imóveis</a>
         </p>

@@ -1,15 +1,52 @@
 import { redirect } from "next/navigation";
 import { getSessao, iniciais } from "@/lib/painel";
 import LogoutButton from "./LogoutButton";
+import NotificacoesSino from "./NotificacoesSino";
 
 export const dynamic = "force-dynamic";
 
+// Calcula os avisos de vencimento do plano da imobiliária.
+function montarAvisos(imob) {
+  const avisos = [];
+  if (!imob) return avisos;
+  const st = imob.status;
+  if (st === "pausada") {
+    avisos.push({ nivel: "urgente", texto: "Seu plano está pausado. Renove para reativar seus imóveis no portal." });
+    return avisos;
+  }
+  if (["teste", "ativa", "tolerancia"].includes(st) && imob.data_vigencia) {
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    const vig = new Date(imob.data_vigencia + "T00:00:00");
+    const dias = Math.round((vig - hoje) / 86400000);
+    if (dias < 0) avisos.push({ nivel: "urgente", texto: `Seu plano venceu há ${-dias} ${-dias === 1 ? "dia" : "dias"}. Renove para não ter os imóveis pausados.` });
+    else if (dias === 0) avisos.push({ nivel: "urgente", texto: "Seu plano vence hoje. Renove para continuar publicando." });
+    else if (dias <= 5) avisos.push({ nivel: "alerta", texto: `Faltam ${dias} ${dias === 1 ? "dia" : "dias"} para o vencimento do seu plano.` });
+  }
+  return avisos;
+}
+
 export default async function PainelLayout({ children }) {
-  const { user, imob } = await getSessao();
+  const { user, imob, supabase } = await getSessao();
   if (!user) redirect("/entrar");
+
+  const avisos = montarAvisos(imob);
+  let waLink = null;
+  try {
+    const { data: cfgRows } = await supabase
+      .from("configuracoes")
+      .select("chave, valor")
+      .in("chave", ["whatsapp_cobranca", "msg_cobranca"]);
+    const cfg = Object.fromEntries((cfgRows || []).map((r) => [r.chave, r.valor]));
+    const num = (cfg.whatsapp_cobranca || "").replace(/\D/g, "");
+    if (num) {
+      const msg = (cfg.msg_cobranca || "Olá, gostaria de renovar meu plano.").replace("{imob}", imob?.nome || "");
+      waLink = `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+    }
+  } catch {}
 
   return (
     <div className="painel">
+      <NotificacoesSino avisos={avisos} waLink={waLink} />
       <aside className="pside">
         <a className="logo" href="/painel">
           <img src="/logo-escuro.png" alt="Acholar" style={{ height: 30, width: "auto", display: "block" }} />

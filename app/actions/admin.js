@@ -107,6 +107,16 @@ export async function aprovarImobiliaria(id) {
   return { ok: true };
 }
 
+// Salvar configurações (chave/valor) — ex.: WhatsApp e mensagem de cobrança
+export async function salvarConfig(pares) {
+  const s = await comoAdmin();
+  if (!s) return { ok: false, error: "Sem permissão." };
+  const rows = Object.entries(pares).map(([chave, valor]) => ({ chave, valor: String(valor ?? "") }));
+  const { error } = await s.supabase.from("configuracoes").upsert(rows, { onConflict: "chave" });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 // Atualizar campos da imobiliária (status, plano, vigência, destaques contratados)
 export async function atualizarImobiliaria(id, campos) {
   const s = await comoAdmin();

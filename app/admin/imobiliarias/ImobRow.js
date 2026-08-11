@@ -34,6 +34,7 @@ export default function ImobRow({ imob }) {
         Home
       </label>
       <button className="btn-xs btn-amber2" onClick={salvar} disabled={busy}>Salvar</button>
+      <a className="btn-xs" href={`/admin/imobiliarias/${imob.id}/editar`} style={{ background: "var(--surface-2)", color: "var(--ink)", textDecoration: "none" }}>Editar</a>
     </div>
   );
 }

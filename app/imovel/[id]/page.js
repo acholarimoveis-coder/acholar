@@ -61,6 +61,12 @@ export default async function ImovelPage({ params }) {
     );
   }
 
+  // conta a visualização (sem travar a página se falhar)
+  try {
+    const supabase = createClient();
+    await supabase.rpc("increment_visita", { p_id: params.id });
+  } catch {}
+
   const fotos = (imovel.fotos && imovel.fotos.length ? imovel.fotos : [FOTO_PLACEHOLDER]);
   const locacao = imovel.tipo_negocio === "locacao";
   const specs = [
