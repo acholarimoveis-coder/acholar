@@ -6,6 +6,7 @@ import { aprovarImobiliaria, atualizarImobiliaria } from "@/app/actions/admin";
 export default function ImobRow({ imob }) {
   const router = useRouter();
   const [dest, setDest] = useState(imob.destaques_contratados || 0);
+  const [home, setHome] = useState(!!imob.destaque_home);
   const [busy, setBusy] = useState(false);
 
   async function aprovar() {
@@ -16,7 +17,7 @@ export default function ImobRow({ imob }) {
   }
   async function salvar() {
     setBusy(true);
-    await atualizarImobiliaria(imob.id, { destaques_contratados: Number(dest) || 0 });
+    await atualizarImobiliaria(imob.id, { destaques_contratados: Number(dest) || 0, destaque_home: home });
     setBusy(false);
     router.refresh();
   }
@@ -28,6 +29,10 @@ export default function ImobRow({ imob }) {
       ) : null}
       <span style={{ fontSize: ".78rem", color: "var(--muted)", fontWeight: 700 }}>Destaques:</span>
       <input className="mininp" type="number" min="0" value={dest} onChange={(e) => setDest(e.target.value)} />
+      <label style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: ".78rem", fontWeight: 700, color: "var(--muted)", cursor: "pointer" }}>
+        <input type="checkbox" checked={home} onChange={(e) => setHome(e.target.checked)} />
+        Home
+      </label>
       <button className="btn-xs btn-amber2" onClick={salvar} disabled={busy}>Salvar</button>
     </div>
   );

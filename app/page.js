@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import SiteHeader from "./components/SiteHeader";
 import SiteFooter from "./components/SiteFooter";
 import ImovelCard from "./components/ImovelCard";
+import Banner from "./components/Banner";
+import { formatPreco, FOTO_PLACEHOLDER, iniciais } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -37,6 +39,51 @@ async function getDestaques() {
   }
 }
 
+// Cidades que têm imóveis publicados, com a contagem — para a seção "Explore por cidade".
+async function getCidades() {
+  try {
+    const supabase = createClient();
+    const { data } = await supabase.from("imoveis").select("cidade").eq("status", "publicado");
+    const cont = {};
+    (data || []).forEach((d) => {
+      if (d.cidade) cont[d.cidade] = (cont[d.cidade] || 0) + 1;
+    });
+    return Object.entries(cont)
+      .map(([cidade, total]) => ({ cidade, total }))
+      .sort((a, b) => b.total - a.total);
+  } catch {
+    return [];
+  }
+}
+
+// Imobiliárias marcadas como destaque pelo admin + os 3 imóveis mais visitados de cada uma.
+async function getImobsDestaque() {
+  try {
+    const supabase = createClient();
+    const { data: imobs } = await supabase
+      .from("imobiliarias")
+      .select("id, nome, cidade, logo_url")
+      .eq("destaque_home", true)
+      .in("status", ["teste", "ativa", "tolerancia"])
+      .limit(4);
+    if (!imobs || !imobs.length) return [];
+    const out = [];
+    for (const im of imobs) {
+      const { data: tops } = await supabase
+        .from("imoveis")
+        .select("id, titulo, preco, tipo_negocio, fotos, bairro")
+        .eq("imobiliaria_id", im.id)
+        .eq("status", "publicado")
+        .order("visitas", { ascending: false })
+        .limit(3);
+      out.push({ ...im, tops: tops || [] });
+    }
+    return out.filter((im) => im.tops.length > 0);
+  } catch {
+    return [];
+  }
+}
+
 const categorias = [
   { tipo: "casa", nome: "Casas", d: "M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" },
   { tipo: "apartamento", nome: "Apartamentos", d: "M5 3h14v18H5zM9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2" },
@@ -47,7 +94,7 @@ const categorias = [
 ];
 
 export default async function Home() {
-  const destaques = await getDestaques();
+  const [destaques, cidades, imobsDestaque] = await Promise.all([getDestaques(), getCidades(), getImobsDestaque()]);
 
   return (
     <>
@@ -93,6 +140,8 @@ export default async function Home() {
         </div>
       </section>
 
+      <Banner espaco="home-topo" />
+
       <section className="wrap">
         <div className="sec-head">
           <h2>Explore por tipo de imóvel</h2>
@@ -107,6 +156,24 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      {cidades.length > 1 ? (
+        <section className="wrap">
+          <div className="sec-head">
+            <h2>Explore por cidade</h2>
+            <p>Imóveis de Jales e das cidades vizinhas, num só lugar.</p>
+          </div>
+          <div className="cidades-grid">
+            {cidades.map((c) => (
+              <a key={c.cidade} className="cidade-chip" href={`/imoveis?cidade=${encodeURIComponent(c.cidade)}`}>
+                <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M12 21s-7-6-7-11a7 7 0 0 1 14 0c0 5-7 11-7 11z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                <b>{c.cidade}</b>
+                <span>{c.total} {c.total === 1 ? "imóvel" : "imóveis"}</span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="wrap" style={{ paddingTop: 16 }}>
         <div className="feat-head">
@@ -124,6 +191,41 @@ export default async function Home() {
           )}
         </div>
       </section>
+
+      {imobsDestaque.length > 0 ? (
+        <section className="wrap" style={{ paddingTop: 8 }}>
+          <div className="sec-head">
+            <h2>Imobiliárias em destaque</h2>
+            <p>Parceiras da região e alguns dos imóveis mais procurados de cada uma.</p>
+          </div>
+          <div className="imobd-grid">
+            {imobsDestaque.map((im) => (
+              <div key={im.id} className="imobd-card">
+                <a className="imobd-head" href={`/imobiliaria/${im.id}`}>
+                  <div className="imobd-logo">
+                    {im.logo_url ? <img src={im.logo_url} alt="" /> : <span>{iniciais(im.nome)}</span>}
+                  </div>
+                  <div className="imobd-info">
+                    <b>{im.nome}</b>
+                    <span>{im.cidade || "Jales"}</span>
+                  </div>
+                </a>
+                <div className="imobd-imoveis">
+                  {im.tops.map((t) => (
+                    <a key={t.id} className="imobd-mini" href={`/imovel/${t.id}`} title={t.titulo}>
+                      <img src={(t.fotos && t.fotos[0]) || FOTO_PLACEHOLDER} alt="" loading="lazy" />
+                      <span className="p">{formatPreco(t.preco, t.tipo_negocio)}</span>
+                    </a>
+                  ))}
+                </div>
+                <a className="btn btn-ghost imobd-cta" href={`/imobiliaria/${im.id}`}>Ver todos os imóveis</a>
+              </div>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <Banner espaco="home-retangulo" />
 
       <section>
         <div className="why">

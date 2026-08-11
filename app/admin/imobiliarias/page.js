@@ -18,7 +18,10 @@ export default async function AdminImobiliarias() {
 
   return (
     <>
-      <div className="ptop">Imobiliárias</div>
+      <div className="ptop" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span>Imobiliárias</span>
+        <a className="btn btn-primary" href="/admin/imobiliarias/nova" style={{ fontSize: ".85rem", padding: "9px 16px" }}>+ Nova imobiliária</a>
+      </div>
       <div className="pcontent">
         <div className="pcard">
           {imobs && imobs.length > 0 ? (

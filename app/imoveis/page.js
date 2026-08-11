@@ -3,8 +3,20 @@ import SiteHeader from "../components/SiteHeader";
 import SiteFooter from "../components/SiteFooter";
 import ImovelCard from "../components/ImovelCard";
 import MapaImoveis from "../components/MapaImoveis";
+import MapaMobile from "../components/MapaMobile";
+import Banner from "../components/Banner";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ searchParams }) {
+  const sp = searchParams || {};
+  const tipoNome = { casa: "Casas", apartamento: "Apartamentos", terreno: "Terrenos", comercial: "Imóveis comerciais", rural: "Imóveis rurais", lancamento: "Lançamentos" }[sp.tipo] || "Imóveis";
+  const negocio = sp.negocio === "locacao" ? " para alugar" : sp.negocio === "venda" ? " à venda" : "";
+  const cidade = sp.cidade || "Jales e região";
+  const title = `${tipoNome}${negocio} em ${cidade} | Acholar`;
+  const description = `Encontre ${tipoNome.toLowerCase()}${negocio} em ${cidade}. Todos os imóveis das imobiliárias da região reunidos num só lugar.`;
+  return { title, description, alternates: { canonical: "/imoveis" } };
+}
 
 function limpa(txt) {
   return (txt || "").replace(/[%,()]/g, "").trim();
@@ -13,6 +25,7 @@ function limpa(txt) {
 async function buscar(sp) {
   const negocio = sp.negocio || "";
   const tipo = sp.tipo || "";
+  const cidade = sp.cidade || "";
   const q = limpa(sp.q);
   const precoMax = sp.precoMax ? Number(sp.precoMax) : null;
   const quartos = sp.quartos ? Number(sp.quartos) : null;
@@ -24,6 +37,7 @@ async function buscar(sp) {
 
     if (negocio) query = query.eq("tipo_negocio", negocio);
     if (tipo) query = query.eq("tipo_imovel", tipo);
+    if (cidade) query = query.eq("cidade", cidade);
     if (q) query = query.or(`bairro.ilike.%${q}%,cidade.ilike.%${q}%,titulo.ilike.%${q}%`);
     if (precoMax) query = query.lte("preco", precoMax);
     if (quartos) query = query.gte("quartos", quartos);
@@ -39,9 +53,20 @@ async function buscar(sp) {
   }
 }
 
+// Lista as cidades que realmente têm imóveis publicados (para o filtro).
+async function getCidades() {
+  try {
+    const supabase = createClient();
+    const { data } = await supabase.from("imoveis").select("cidade").eq("status", "publicado");
+    return [...new Set((data || []).map((d) => d.cidade).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  } catch {
+    return [];
+  }
+}
+
 export default async function Busca({ searchParams }) {
   const sp = searchParams || {};
-  const { data: imoveis, count } = await buscar(sp);
+  const [{ data: imoveis, count }, cidades] = await Promise.all([buscar(sp), getCidades()]);
 
   return (
     <>
@@ -52,7 +77,16 @@ export default async function Busca({ searchParams }) {
           <form className="filterbar" action="/imoveis" method="get">
             <div className="fb wide">
               <label>Onde</label>
-              <input name="q" defaultValue={sp.q || ""} placeholder="Cidade ou bairro" />
+              <input name="q" defaultValue={sp.q || ""} placeholder="Bairro ou palavra-chave" />
+            </div>
+            <div className="fb">
+              <label>Cidade</label>
+              <select name="cidade" defaultValue={sp.cidade || ""}>
+                <option value="">Todas as cidades</option>
+                {cidades.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
             <div className="fb">
               <label>Negócio</label>
@@ -107,6 +141,8 @@ export default async function Busca({ searchParams }) {
         </div>
       </div>
 
+      <Banner espaco="resultados-topo" />
+
       <div className="wrap">
         <div className="rhead">
           <h1>Imóveis em Jales e região</h1>
@@ -126,6 +162,8 @@ export default async function Busca({ searchParams }) {
           </div>
         </div>
       </div>
+
+      {imoveis.length > 0 ? <MapaMobile imoveis={imoveis} /> : null}
 
       <SiteFooter />
     </>

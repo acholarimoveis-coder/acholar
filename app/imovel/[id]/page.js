@@ -21,6 +21,24 @@ async function getImovel(id) {
   }
 }
 
+export async function generateMetadata({ params }) {
+  const imovel = await getImovel(params.id);
+  if (!imovel) return { title: "Imóvel não encontrado — Acholar" };
+  const preco = formatPreco(imovel.preco, imovel.tipo_negocio);
+  const local = [imovel.bairro, imovel.cidade].filter(Boolean).join(", ");
+  const title = `${imovel.titulo} — ${preco} | Acholar`;
+  const description = (imovel.descricao || `${imovel.titulo} em ${local}. ${preco}. Fale direto com a imobiliária pelo Acholar.`).replace(/\s+/g, " ").trim().slice(0, 160);
+  const foto = imovel.fotos && imovel.fotos[0] ? imovel.fotos[0] : null;
+  const url = `/imovel/${imovel.id}`;
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: { title, description, url, type: "website", images: foto ? [foto] : [] },
+    twitter: { card: "summary_large_image", title, description, images: foto ? [foto] : [] },
+  };
+}
+
 const Bed = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 14h18M6 10V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2" /></svg>);
 const Bath = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z" /><path d="M6 12V6a2 2 0 0 1 4 0" /></svg>);
 const Car = () => (<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M5 13l1.5-4.5A2 2 0 0 1 8.4 7h7.2a2 2 0 0 1 1.9 1.5L19 13v5h-2v-2H7v2H5z" /></svg>);
