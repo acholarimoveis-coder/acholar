@@ -19,25 +19,52 @@ const filtros = [
   { k: "pausado", n: "Pausados" },
 ];
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const limpaBusca = (t) => (t || "").replace(/[%,()]/g, "").trim();
+
 export default async function AdminImoveis({ searchParams }) {
   const status = searchParams?.status || "";
+  const busca = limpaBusca(searchParams?.q);
   const { supabase } = await getSessao();
 
   let q = supabase.from("imoveis").select("*, imobiliaria:imobiliarias(nome)").order("criado_em", { ascending: false }).limit(100);
   if (status) q = q.eq("status", status);
+  if (busca) {
+    // Se colou o ID (ou a URL) do imóvel, busca exata; senão busca por texto.
+    const idMatch = busca.match(UUID_RE) || busca.match(/([0-9a-f-]{36})/i);
+    if (idMatch) q = q.eq("id", idMatch[0]);
+    else q = q.or(`titulo.ilike.%${busca}%,bairro.ilike.%${busca}%,cidade.ilike.%${busca}%,codigo.ilike.%${busca}%`);
+  }
   const { data: imoveis } = await q;
+  const qs = (extra) => new URLSearchParams({ ...(busca ? { q: busca } : {}), ...extra }).toString();
 
   return (
     <>
       <div className="ptop">Imóveis</div>
       <div className="pcontent">
-        <div className="rowacts" style={{ marginBottom: 16 }}>
-          {filtros.map((f) => (
-            <a key={f.k} className={`btn-xs ${status === f.k ? "btn-amber2" : "btn-ghost"}`} href={`/admin/imoveis${f.k ? `?status=${f.k}` : ""}`} style={{ textDecoration: "none" }}>
-              {f.n}
-            </a>
-          ))}
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+          <div className="rowacts">
+            {filtros.map((f) => {
+              const query = qs(f.k ? { status: f.k } : {});
+              return (
+                <a key={f.k} className={`btn-xs ${status === f.k ? "btn-amber2" : "btn-ghost"}`} href={`/admin/imoveis${query ? `?${query}` : ""}`} style={{ textDecoration: "none" }}>
+                  {f.n}
+                </a>
+              );
+            })}
+          </div>
+          <form action="/admin/imoveis" method="get" style={{ display: "flex", gap: 8 }}>
+            {status ? <input type="hidden" name="status" value={status} /> : null}
+            <input className="cf-inp" name="q" defaultValue={busca} placeholder="Buscar por título, bairro, código ou ID…" style={{ marginBottom: 0, minWidth: 260 }} />
+            <button className="btn btn-primary btn-xs" type="submit">Buscar</button>
+          </form>
         </div>
+
+        {busca ? (
+          <div style={{ fontSize: ".82rem", color: "var(--muted)", fontWeight: 600, marginBottom: 12 }}>
+            {imoveis?.length || 0} resultado(s) para “{busca}”. <a href={`/admin/imoveis${status ? `?status=${status}` : ""}`} style={{ color: "var(--primary)", fontWeight: 700 }}>Limpar busca</a>
+          </div>
+        ) : null}
 
         <div className="pcard">
           {imoveis && imoveis.length > 0 ? (
