@@ -46,7 +46,7 @@ async function buscar(sp) {
     else if (ordenar === "maior") query = query.order("preco", { ascending: false });
     else query = query.order("criado_em", { ascending: false });
 
-    const { data, count } = await query.limit(60);
+    const { data, count } = await query.limit(1000);
     return { data: data || [], count: count || 0 };
   } catch {
     return { data: [], count: 0 };
