@@ -22,7 +22,9 @@ function limpa(txt) {
   return (txt || "").replace(/[%,()]/g, "").trim();
 }
 
-async function buscar(sp) {
+const POR_PAGINA = 20;
+
+async function buscar(sp, page) {
   const negocio = sp.negocio || "";
   const tipo = sp.tipo || "";
   const cidade = sp.cidade || "";
@@ -46,11 +48,23 @@ async function buscar(sp) {
     else if (ordenar === "maior") query = query.order("preco", { ascending: false });
     else query = query.order("criado_em", { ascending: false });
 
-    const { data, count } = await query.limit(1000);
+    const from = (page - 1) * POR_PAGINA;
+    const { data, count } = await query.range(from, from + POR_PAGINA - 1);
     return { data: data || [], count: count || 0 };
   } catch {
     return { data: [], count: 0 };
   }
+}
+
+// Monta a URL de uma página preservando os filtros atuais.
+function urlPagina(sp, p) {
+  const params = new URLSearchParams();
+  ["q", "cidade", "negocio", "tipo", "quartos", "precoMax", "ordenar"].forEach((k) => {
+    if (sp[k]) params.set(k, sp[k]);
+  });
+  if (p > 1) params.set("page", String(p));
+  const qs = params.toString();
+  return `/imoveis${qs ? `?${qs}` : ""}`;
 }
 
 // Lista as cidades que realmente têm imóveis publicados (para o filtro).
@@ -66,7 +80,9 @@ async function getCidades() {
 
 export default async function Busca({ searchParams }) {
   const sp = searchParams || {};
-  const [{ data: imoveis, count }, cidades] = await Promise.all([buscar(sp), getCidades()]);
+  const page = Math.max(1, Number(sp.page) || 1);
+  const [{ data: imoveis, count }, cidades] = await Promise.all([buscar(sp, page), getCidades()]);
+  const totalPaginas = Math.max(1, Math.ceil(count / POR_PAGINA));
 
   return (
     <>
@@ -161,6 +177,22 @@ export default async function Busca({ searchParams }) {
             <MapaImoveis imoveis={imoveis} />
           </div>
         </div>
+
+        {totalPaginas > 1 ? (
+          <div className="pager">
+            {page > 1 ? (
+              <a className="btn btn-ghost" href={urlPagina(sp, page - 1)}>← Anterior</a>
+            ) : (
+              <span className="btn btn-ghost pager-off">← Anterior</span>
+            )}
+            <span className="pager-info">Página {page} de {totalPaginas}</span>
+            {page < totalPaginas ? (
+              <a className="btn btn-ghost" href={urlPagina(sp, page + 1)}>Próxima →</a>
+            ) : (
+              <span className="btn btn-ghost pager-off">Próxima →</span>
+            )}
+          </div>
+        ) : null}
       </div>
 
       {imoveis.length > 0 ? <MapaMobile imoveis={imoveis} /> : null}

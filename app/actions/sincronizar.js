@@ -1,6 +1,6 @@
 "use server";
 import { getSessao } from "@/lib/painel";
-import { parseXmlImoveis } from "@/lib/xml";
+import { importarXmlParaImobiliaria } from "@/lib/sync";
 
 // Salva o link do XML da imobiliária
 export async function salvarXmlUrl(url) {
@@ -11,42 +11,17 @@ export async function salvarXmlUrl(url) {
   return { ok: true };
 }
 
-// Núcleo: lê o XML (string) e grava os imóveis (novos + atualizados)
+// Núcleo: usa a MESMA lógica protegida do robô diário (respeita localização
+// travada/aproximada e não apaga coordenada quando o XML vem sem uma válida).
 async function processar(supabase, imob, xml) {
-  let itens;
+  let r;
   try {
-    itens = parseXmlImoveis(xml);
+    r = await importarXmlParaImobiliaria(supabase, imob.id, xml);
   } catch (e) {
-    return { ok: false, error: "Erro ao ler o XML: " + (e?.message || "") };
+    return { ok: false, error: "Erro ao processar o XML: " + (e?.message || "") };
   }
-  if (!itens.length) return { ok: true, novos: 0, atualizados: 0, aviso: "Nenhum imóvel disponível encontrado no XML." };
-
-  const { data: existentes } = await supabase
-    .from("imoveis")
-    .select("id, external_id")
-    .eq("imobiliaria_id", imob.id)
-    .eq("origem", "xml");
-  const mapa = new Map((existentes || []).map((e) => [e.external_id, e.id]));
-
-  const novos = [];
-  let atualizados = 0;
-  const agora = new Date().toISOString();
-
-  for (const it of itens) {
-    const campos = { ...it, atualizado_em: agora };
-    if (it.external_id && mapa.has(it.external_id)) {
-      await supabase.from("imoveis").update(campos).eq("id", mapa.get(it.external_id));
-      atualizados++;
-    } else {
-      novos.push({ ...campos, imobiliaria_id: imob.id, origem: "xml", status: "publicado" });
-    }
-  }
-
-  if (novos.length) {
-    const { error } = await supabase.from("imoveis").insert(novos);
-    if (error) return { ok: false, error: error.message };
-  }
-  return { ok: true, novos: novos.length, atualizados, total: itens.length };
+  if (!r.total) return { ok: true, novos: 0, atualizados: 0, aviso: "Nenhum imóvel disponível encontrado no XML." };
+  return { ok: true, ...r };
 }
 
 // Baixa o XML de uma URL e sincroniza

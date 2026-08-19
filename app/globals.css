@@ -217,6 +217,9 @@ a.rank-row:hover{background:var(--surface-2)}
 .busca-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .busca-map{position:sticky;top:80px;height:calc(100vh - 100px)}
 @media(max-width:1000px){.busca-layout{grid-template-columns:1fr}.busca-map{display:none}}
+.pager{display:flex;align-items:center;justify-content:center;gap:16px;padding:28px 0 8px}
+.pager-info{font-weight:700;font-size:.9rem;color:var(--muted)}
+.pager-off{opacity:.4;pointer-events:none}
 .vermapa-btn{display:none}
 .vermapa-overlay{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column}
 .vm-top{padding:10px 12px;display:flex;justify-content:flex-end;border-bottom:1px solid var(--line)}
