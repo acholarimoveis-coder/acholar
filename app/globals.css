@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap');
 
+/* build: repo público — deploy liberado */
 /* ===== Tokens da marca Acholar ===== */
 :root{
   --bg:#FFFFFF;--surface:#F6F9F9;--surface-2:#EEF4F4;--ink:#031524;
