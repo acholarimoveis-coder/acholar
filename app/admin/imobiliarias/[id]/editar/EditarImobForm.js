@@ -5,7 +5,7 @@ import { atualizarImobiliaria } from "@/app/actions/admin";
 
 const STATUS = [
   { v: "pendente", n: "Pendente" },
-  { v: "teste", n: "Em teste (grátis)" },
+  { v: "teste", n: "Em avaliação" },
   { v: "ativa", n: "Ativa (pagante)" },
   { v: "tolerancia", n: "Em tolerância" },
   { v: "pausada", n: "Pausada" },

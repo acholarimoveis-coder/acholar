@@ -9,6 +9,7 @@ const rotulos = {
   rascunho: ["Rascunho", ""],
   pausado: ["Pausado", ""],
   reprovado: ["Reprovado", "novo"],
+  removido: ["Fora do XML", "novo"],
 };
 
 export default async function MeusImoveis() {

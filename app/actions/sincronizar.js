@@ -16,7 +16,7 @@ export async function salvarXmlUrl(url) {
 async function processar(supabase, imob, xml) {
   let r;
   try {
-    r = await importarXmlParaImobiliaria(supabase, imob.id, xml);
+    r = await importarXmlParaImobiliaria(supabase, imob.id, xml, "manual");
   } catch (e) {
     return { ok: false, error: "Erro ao processar o XML: " + (e?.message || "") };
   }

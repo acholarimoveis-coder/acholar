@@ -12,7 +12,7 @@ const faqs = [
   { q: "Como falo com a imobiliária de um imóvel?", a: "Na página de cada imóvel há um formulário de contato e um botão para falar direto no WhatsApp da imobiliária responsável." },
   { q: "Os imóveis estão sempre atualizados?", a: "Sim. Os anúncios são sincronizados com os sistemas das imobiliárias, então preço, fotos e disponibilidade ficam atualizados." },
   { q: "O Acholar é uma imobiliária?", a: "Não. O Acholar é um portal de anúncios. Toda negociação, visita e contrato acontece diretamente com a imobiliária que anuncia o imóvel." },
-  { q: "Sou de uma imobiliária. Como anuncio?", a: "É simples: você vira parceiro e integra seus imóveis pelo XML do seu sistema (Kenlo, Microsistec, Universal...) ou cadastra manualmente. Comece com 3 meses grátis." },
+  { q: "Sou de uma imobiliária. Como anuncio?", a: "É simples: você vira parceiro e integra seus imóveis pelo XML do seu sistema (Kenlo, Microsistec, Universal...) ou cadastra manualmente. Fale com a gente para começar." },
 ];
 
 export default function Ajuda() {

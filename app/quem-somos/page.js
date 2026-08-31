@@ -35,7 +35,7 @@ export default function QuemSomos() {
         <div className="imob-box">
           <div className="txt">
             <h2>Faça parte do Acholar</h2>
-            <p>É de uma imobiliária da região? Coloque seus imóveis no portal e comece com 3 meses grátis.</p>
+            <p>É de uma imobiliária da região? Coloque seus imóveis no portal e alcance mais clientes.</p>
           </div>
           <a className="btn btn-white" href="/anuncie">Anunciar meus imóveis</a>
         </div>

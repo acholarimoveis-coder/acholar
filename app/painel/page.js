@@ -35,7 +35,7 @@ export default async function PainelHome() {
 
         {imob?.status === "teste" ? (
           <div className="ptrial">
-            Você está no período de teste grátis.
+            Seu acesso ao portal está ativo.
             <span>{imob.data_vigencia ? `Válido até ${new Date(imob.data_vigencia).toLocaleDateString("pt-BR")}.` : "Aproveite para receber contatos."}</span>
           </div>
         ) : null}

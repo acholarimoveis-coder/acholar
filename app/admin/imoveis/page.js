@@ -12,6 +12,7 @@ const rotulos = {
   rascunho: ["Rascunho", ""],
   pausado: ["Pausado", ""],
   reprovado: ["Reprovado", "novo"],
+  removido: ["Removido (fora do XML)", "novo"],
 };
 
 const filtros = [
@@ -19,6 +20,7 @@ const filtros = [
   { k: "pendente", n: "Pendentes" },
   { k: "publicado", n: "Publicados" },
   { k: "pausado", n: "Pausados" },
+  { k: "removido", n: "Removidos" },
 ];
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

@@ -54,7 +54,7 @@ export async function GET(request) {
         const resp = await fetch(im.xml_url, { cache: "no-store" });
         if (resp.ok) {
           const xml = await resp.text();
-          const res = await importarXmlParaImobiliaria(supabase, im.id, xml);
+          const res = await importarXmlParaImobiliaria(supabase, im.id, xml, "cron");
           xmlResumo.push({ imobiliaria: im.nome, ...res });
         } else {
           xmlResumo.push({ imobiliaria: im.nome, erro: `HTTP ${resp.status}` });

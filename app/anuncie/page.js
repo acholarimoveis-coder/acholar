@@ -3,7 +3,7 @@ import SiteFooter from "../components/SiteFooter";
 
 export const metadata = {
   title: "Anuncie seus imóveis — Acholar",
-  description: "Coloque os imóveis da sua imobiliária no Acholar e alcance quem procura na região de Jales. 3 meses grátis.",
+  description: "Coloque os imóveis da sua imobiliária no Acholar e alcance quem procura na região de Jales.",
 };
 
 export default function Anuncie() {
@@ -17,7 +17,7 @@ export default function Anuncie() {
         <div className="wrap">
           <span className="eyebrow">Para imobiliárias</span>
           <h1>Coloque seus imóveis onde a região <em>procura</em></h1>
-          <p>O Acholar reúne quem está buscando imóvel em Jales e região. Anuncie com trabalho zero e comece com 3 meses grátis.</p>
+          <p>O Acholar reúne quem está buscando imóvel em Jales e região. Anuncie com trabalho zero e alcance mais compradores.</p>
           <div style={{ marginTop: 24, display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <a className="btn btn-primary" href={waLink} target="_blank" rel="noopener" style={{ background: "#25D366" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.8-1.5A10 10 0 1 0 12 2z" /></svg>
@@ -60,8 +60,8 @@ export default function Anuncie() {
       <section className="wrap">
         <div className="imob-box">
           <div className="txt">
-            <h2>Comece com 3 meses grátis</h2>
-            <p>Sem compromisso. Você testa, recebe contatos e só depois decide.</p>
+            <h2>Pronto para começar?</h2>
+            <p>Fale com a gente e coloque os imóveis da sua imobiliária no ar.</p>
           </div>
           <a className="btn btn-white" href={waLink} target="_blank" rel="noopener">Quero anunciar</a>
         </div>

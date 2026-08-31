@@ -246,7 +246,7 @@ export default async function Home() {
         <div className="imob-box">
           <div className="txt">
             <h2>Tem uma imobiliária na região?</h2>
-            <p>Coloque seus imóveis no Acholar e alcance quem está procurando agora. Integração automática com seu sistema. 3 meses grátis para começar.</p>
+            <p>Coloque seus imóveis no Acholar e alcance quem está procurando agora. Integração automática com seu sistema, trabalho zero.</p>
           </div>
           <a className="btn btn-white" href="/anuncie">Anunciar meus imóveis</a>
         </div>

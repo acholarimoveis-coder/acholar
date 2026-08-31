@@ -71,7 +71,7 @@ export async function criarImobiliaria(campos) {
     try {
       const resp = await fetch(campos.xml_url);
       const xml = await resp.text();
-      sync = await importarXmlParaImobiliaria(admin, imob.id, xml);
+      sync = await importarXmlParaImobiliaria(admin, imob.id, xml, "cadastro");
     } catch (err) {
       sync = { erro: err?.message || "Falha ao ler o XML." };
     }
