@@ -149,6 +149,7 @@ a.rank-row:hover{background:var(--surface-2)}
 .rk-val{font-weight:800;color:var(--primary-dark);font-size:.95rem;white-space:nowrap}
 .rk-val i{font-style:normal;font-size:.72rem;color:var(--muted);font-weight:600}
 @media(max-width:760px){.relat-grid{grid-template-columns:1fr}}
+.flag{display:inline-block;background:#FBEADB;color:#96551A;font-size:.7rem;font-weight:800;padding:3px 8px;border-radius:6px;white-space:nowrap}
 .pgrid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;align-items:start}
 .pgrid2 .pform{max-width:none}
 .promo-list{display:flex;flex-direction:column;gap:12px}
