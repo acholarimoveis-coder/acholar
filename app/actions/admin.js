@@ -119,6 +119,40 @@ export async function salvarLocalImovel(id, { lat, lng }) {
   return { ok: true };
 }
 
+// Forçar a sincronização do XML de uma imobiliária, na hora, pelo admin.
+// Usa o MESMO import protegido (respeita localização travada/aproximada).
+export async function sincronizarImobiliariaAdmin(imobId) {
+  const s = await comoAdmin();
+  if (!s) return { ok: false, error: "Sem permissão." };
+  const admin = createAdminClient();
+  const { data: imob } = await admin.from("imobiliarias").select("id, nome, xml_url").eq("id", imobId).single();
+  if (!imob) return { ok: false, error: "Imobiliária não encontrada." };
+  if (!imob.xml_url) return { ok: false, error: "Esta imobiliária não tem link de XML configurado." };
+
+  let xml;
+  try {
+    const resp = await fetch(imob.xml_url, { cache: "no-store" });
+    if (!resp.ok) return { ok: false, error: `Não consegui baixar o XML (código ${resp.status}).` };
+    xml = await resp.text();
+  } catch (e) {
+    return { ok: false, error: "Erro ao baixar o XML: " + (e?.message || "") };
+  }
+
+  let r;
+  try {
+    r = await importarXmlParaImobiliaria(admin, imobId, xml, "manual-admin");
+  } catch (e) {
+    return { ok: false, error: "Erro ao processar o XML: " + (e?.message || "") };
+  }
+
+  // posiciona por bairro só os imóveis novos sem coordenada (respeita os travados)
+  try {
+    await geocodificarPendentes(admin, { max: 8 });
+  } catch {}
+
+  return { ok: true, ...r };
+}
+
 // Rodar a geocodificação aproximada (por bairro) sob demanda, no admin
 export async function geocodificarAgora() {
   const s = await comoAdmin();

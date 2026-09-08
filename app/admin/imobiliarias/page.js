@@ -2,6 +2,7 @@ import { getSessao } from "@/lib/painel";
 import ImobRow from "./ImobRow";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 const st = {
   pendente: ["Pendente", "pend"],
