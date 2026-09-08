@@ -1,6 +1,7 @@
 import { getSessao } from "@/lib/painel";
 import { formatPreco, FOTO_PLACEHOLDER } from "@/lib/format";
 import ModButtons from "../imoveis/ModButtons";
+import AprovarButton from "./AprovarButton";
 
 export const dynamic = "force-dynamic";
 
@@ -24,11 +25,12 @@ export default async function AdminRevisao() {
   const { supabase } = await getSessao();
   const { data } = await supabase
     .from("imoveis")
-    .select("id, titulo, codigo, preco, tipo_negocio, area_util, area_total, fotos, descricao, bairro, cidade, status, imobiliaria:imobiliarias(nome)")
+    .select("id, titulo, codigo, preco, tipo_negocio, area_util, area_total, fotos, descricao, bairro, cidade, status, revisado, imobiliaria:imobiliarias(nome)")
     .eq("status", "publicado")
     .limit(1000);
 
   const revisar = (data || [])
+    .filter((im) => !im.revisado)
     .map((im) => ({ ...im, _flags: flags(im) }))
     .filter((im) => im._flags.length > 0)
     .sort((a, b) => b._flags.length - a._flags.length);
@@ -69,7 +71,12 @@ export default async function AdminRevisao() {
                           {im._flags.map((fl) => <span key={fl} className="flag">{fl}</span>)}
                         </div>
                       </td>
-                      <td><ModButtons id={im.id} status={im.status} /></td>
+                      <td>
+                        <div className="rowacts">
+                          <AprovarButton id={im.id} />
+                          <ModButtons id={im.id} status={im.status} />
+                        </div>
+                      </td>
                     </tr>
                   );
                 })}

@@ -108,6 +108,15 @@ export async function aprovarImobiliaria(id) {
   return { ok: true };
 }
 
+// Marcar/desmarcar um imóvel como "revisado" (sai/volta da tela de Revisão).
+export async function aprovarRevisao(id, valor = true) {
+  const s = await comoAdmin();
+  if (!s) return { ok: false, error: "Sem permissão." };
+  const { error } = await s.supabase.from("imoveis").update({ revisado: !!valor }).eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 // Ajustar manualmente a localização de um imóvel e travá-la contra o XML
 export async function salvarLocalImovel(id, { lat, lng }) {
   const s = await comoAdmin();
